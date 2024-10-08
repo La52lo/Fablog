@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>logsheet Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/realm-web/dist/bundle.iife.js"></script>
+	<script defer src="script.js"></script>
+
+
+
+</head>
+<body>
+
+<div class="toolbar">
+    <button onclick="newLogsheet()"><i class="fas fa-plus-circle"></i> New Logsheet</button>
+	<button onclick="openLoadModal()"><i class="fas fa-folder-open"></i> Load Logsheet</button>
+    <button onclick="saveLogsheet()"><i class="fas fa-save"></i> Save Logsheet</button>
+    <button onclick="deleteLogsheet()"><i class="fas fa-trash"></i> Delete Logsheet</button>
+    
+</div>
+
+<div class="container" id="ogsheet-container">
+    <div class="header">
+        <label for="logsheet-title">logsheet Name</label>
+        <input type="text" id="logsheet-title" placeholder="Enter logsheet name">
+    </div>
+    <div class="header">
+        <label for="logsheet-author">Author</label>
+        <input type="text" id="logsheet-author" placeholder="Enter author name">
+    </div>
+    <div class="header">
+        <label for="created-at">Created At</label>
+        <input type="text" id="created-at" readonly>
+    </div>
+    <div class="header">
+        <label for="modified-at">Last Modified At</label>
+        <input type="text" id="modified-at" readonly>
+    </div>
+    <div id="items-container">
+	
+        <!-- Dynamic logsheet items will be appended here -->
+    </div>
+	<input type="hidden" id="logsheet-id" value="">
+    <button onclick="addLogsheetStep()">Add Procedure</button>
+    <button onclick="addNote()">Add Note</button>
+    <button onclick="addAttachment()">Add Attachment</button>
+</div>
+
+<!-- Load Logsheet Modal -->
+<div id="loadModal" class="modal">
+    <div class="modal-content">
+        <button class="remove-item" onclick="closeLoadModal()">X</button>
+        <h2>Select a Logsheet</h2>
+        <div class="search-container">
+            <input type="text" id="search-logsheets" placeholder="Search by title..." onkeyup="filterLogsheets()">
+        </div>
+        <ul id="logsheet-list" class="logsheet-list">
+            <!-- Logsheet titles will be populated here -->
+        </ul>
+    </div>
+</div>
+
+<div id="templateModal" class="modal">
+    <div class="modal-content">
+        <button class="remove-item" onclick="closeTemplateModal()">X</button>
+        <h2>Select a Template</h2>
+        <div class="search-container">
+            <input type="text" id="search-templates" placeholder="Search templates..." onkeyup="filterTemplates()">
+        </div>
+        <ul id="template-list" class="template-list">
+            <!-- Template titles will be populated here -->
+        </ul>
+    </div>
+</div>
+
+
+</body>
+</html>
