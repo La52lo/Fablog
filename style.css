@@ -199,6 +199,7 @@ hr {
 }
 
 .textbox-lines {
+  width: calc(100% - 12px);
   font-size: 14px;
   border: none;
   background-attachment: local;
@@ -206,6 +207,7 @@ hr {
   line-height: 26.6px;
   padding: 4.4333333333px 10px;
   resize: none;
+  overflow: hidden;
 }
 
 .file-upload-button {
