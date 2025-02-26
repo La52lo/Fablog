@@ -1,6 +1,14 @@
 
     const app = new Realm.App({ id: "nanofabrication-1-qrqzqui" }); // Replace with your MongoDB Realm App ID
     let user = null;
+	document.addEventListener("DOMContentLoaded", function () {
+		const saveButton = document.getElementById("floating-save-button");
+		
+		// Show button only when there's user interaction
+		document.getElementById("logsheet-container").addEventListener("input", function () {
+			saveButton.style.display = "block";
+		});
+	});
     async function authenticateAnonymously() {
         try {
             const credentials = Realm.Credentials.anonymous();

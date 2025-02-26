@@ -210,6 +210,29 @@ hr {
   overflow: hidden;
 }
 
+#floating-save-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #28a745; /* Green for visibility */
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 5px; /* Slight rounding for aesthetics */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 1000; /* Ensures it stays on top */
+	display: none; /* Hide the button initially */
+}
+
+#floating-save-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+
 .file-upload-button {
     background-color: white;
     color: black;
