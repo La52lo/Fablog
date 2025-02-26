@@ -232,6 +232,33 @@ hr {
     background-color: #218838; /* Darker green on hover */
 }
 
+#template-list {
+    padding: 0; /* Removes extra padding from the list */
+    margin: 5px;
+    list-style-type: none; /* Removes default bullets */
+}
+
+
+.template-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    border-bottom: 1px solid black;
+}
+
+.template-item button.delete-template {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.template-item button.delete-template:hover {
+    color: darkred;
+}
+
 
 .file-upload-button {
     background-color: white;
@@ -308,10 +335,12 @@ code, pre {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    padding: 20px;
+    padding: 10px;
     border: 2px solid black; /* Uniform border */
     border-radius: 0; /* Angular corners */
     width: 50%;
+	max-height: 80vh; /* Prevents the modal from growing too large */
+    overflow-y: auto; /* Enables scrolling if content overflows */
 }
 
 .modal-header {

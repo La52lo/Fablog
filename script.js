@@ -550,8 +550,13 @@ async function loadTemplateTitles() {
             // Populate the template list with the fetched titles
             response.data.forEach(title => {
                 const li = document.createElement('li');
-                li.textContent = title;
-                li.onclick = () => selectTemplate(title);
+				li.innerHTML = `
+                <span onclick="selectTemplate('${title}')">${title}</span> 
+                <button class="delete-template" onclick="deleteTemplate('${title}')">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+				`;
+				li.className = "template-item";
                 templateList.appendChild(li);
             });
         } else {
@@ -599,4 +604,21 @@ async function selectTemplate(title) {
     }
 }
 
+async function deleteTemplate(title) {
+    if (!confirm(`Are you sure you want to delete template "${title}"?`)) return;
+
+    try {
+        const response = await app.currentUser.functions.deleteTemplateByTitle(title); // Call backend function
+
+        if (response.success) {
+            alert("Template deleted successfully!");
+            loadTemplateTitles(); // Refresh template list after deletion
+        } else {
+            alert("Failed to delete template: " + response.error);
+        }
+    } catch (error) {
+        console.error("Error deleting template:", error);
+        alert("An error occurred while deleting the template.");
+    }
+}
 
