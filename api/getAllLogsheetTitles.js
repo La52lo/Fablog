@@ -8,7 +8,7 @@ export default async function handler(req, res) {
         await client.connect();
         const db = client.db(dbName); // Replace with your database name
 		const collection = db.collection(collName);
-        const titles = await db.collection.distinct("title");
+        const titles = await collection.distinct("title");
         
         res.status(200).json({ success: true, data: titles });
     } catch (error) {
