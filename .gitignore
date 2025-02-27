@@ -1,3 +1,4 @@
 # Ignore the PowerShell script
 git-commit-push.ps1
 
+.vercel
