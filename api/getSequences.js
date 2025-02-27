@@ -9,6 +9,6 @@ export default async function handler(req, res) {
         
         res.status(200).json({ success: true, data: sequences });
     } catch (error) {
-        res.status(500).json({ success: false, error: process.env.MONGO_URI });
+        res.status(500).json({ success: false, error: error.message });
     }
 }
