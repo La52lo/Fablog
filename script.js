@@ -448,7 +448,7 @@ async function downloadAttachment(fileId) {
             document.getElementById('logsheet-author').value = logsheet.author || '';
             document.getElementById('created-at').value = logsheet.created_at || '';
             document.getElementById('modified-at').value = logsheet.last_modified_at || '';
-			document.getElementById('logsheet-id').value = logsheet._id.toString();
+			document.getElementById('logsheet-id').value = logsheet._id;
 
             document.getElementById('items-container').innerHTML = '';
 
