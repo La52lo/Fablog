@@ -96,7 +96,7 @@
 			});
 			const jsonData = await response.json();
             if (jsonData.success) {
-                editLogsheet(jsonData.data._id.toString());
+                editLogsheet(jsonData);
             } else {
                 console.error("Failed to load logsheet:", jsonData.error);
             }
@@ -440,15 +440,9 @@ async function downloadAttachment(fileId) {
         }
     }
 */
-    async function editLogsheet(logsheetId) {
+    async function editLogsheet(logsheet) {
         try {
-            const response = await app.currentUser.functions.getLogsheet(logsheetId);
-			const jsonData = await response.json();
-            if (!jsonData.success) {
-                throw new Error(jsonData.error || "Failed to fetch the logsheet.");
-            }
-
-            const logsheet = jsonData.data;
+            //const response = await app.currentUser.functions.getLogsheet(logsheetId);
 
             document.getElementById('logsheet-title').value = logsheet.title || '';
             document.getElementById('logsheet-author').value = logsheet.author || '';
