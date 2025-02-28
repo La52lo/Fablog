@@ -24,6 +24,6 @@ module.exports = async function handler(req, res) {
 		
         return res.status(200).json({ success: true, objectId: insertResult.title });
     } catch (error) {
-        return res.status(500).json({ error: "Failed to save template: " + err.message });
+        return res.status(500).json({ error: "Failed to save template: " + error.message });
     }
 }

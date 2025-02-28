@@ -27,6 +27,6 @@ module.exports = async function handler(req, res) {
 		
         return res.status(200).json({success: true, fileId: insertResult.insertedId.toString() });
     } catch (error) {
-        return res.status(500).json({ error: "Failed to upload file: " + err.message });
+        return res.status(500).json({ error: "Failed to upload file: " + error.message });
     }
 }
