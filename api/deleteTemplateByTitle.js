@@ -3,7 +3,7 @@ let cachedClient = null;
 
 module.exports = async function handler(req, res) {
     var dbName = "logbook";
-	var collName = "logsheets";
+	var collName = "templates";
 	if (req.method !== "DELETE") {
         return res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
@@ -25,7 +25,7 @@ module.exports = async function handler(req, res) {
         if (result.deletedCount === 1) {
             return res.status(200).json({ success: true, message: `Template '${title}' deleted.` });
         } else {
-            return res.status(404).json({ success: false, error: "Logsheet not found." });
+            return res.status(404).json({ success: false, error: `Template '${title}' not found.` });
         }
     } catch (error) {
         return res.status(500).json({ success: false, error: error.message });
