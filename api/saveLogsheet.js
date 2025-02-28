@@ -1,5 +1,4 @@
-import { MongoClient } from "mongodb";
-
+const { MongoClient } = require("mongodb");
 let cachedClient = null;
 
 export default async function handler(req, res) {
