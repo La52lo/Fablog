@@ -96,7 +96,7 @@
 			});
 			const jsonData = await response.json();
             if (jsonData.success) {
-                editLogsheet(jsonData);
+                editLogsheet(jsonData.data);
             } else {
                 console.error("Failed to load logsheet:", jsonData.error);
             }
