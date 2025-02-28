@@ -1,15 +1,16 @@
 import { MongoClient } from "mongodb";
+
 let cachedClient = null;
 
 export default async function handler(req, res) {
     var dbName = "logbook";
 	var collName = "logsheets";
-	if (req.method !== "GET") {
+	if (req.method !== "DELETE") {
         return res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
 
-	try {
-        const { title } = req.body;
+    try {
+        const { title } = req.query;
         if (!title) {
             return res.status(400).json({ success: false, error: "Title is required" });
         }
@@ -20,10 +21,14 @@ export default async function handler(req, res) {
         } 
 
         const db = cachedClient.db(dbName); 
-        const titles = await db.collection(collName).distinct("title");
-        
-        res.status(200).json({ success: true, data: titles });
+        const result = await db.collection(collName).deleteOne({ title: title });
+
+        if (result.deletedCount === 1) {
+            return res.status(200).json({ success: true, message: `Template '${title}' deleted.` });
+        } else {
+            return res.status(404).json({ success: false, error: "Logsheet not found." });
+        }
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        return res.status(500).json({ success: false, error: error.message });
     }
 }

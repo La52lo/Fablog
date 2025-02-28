@@ -1,5 +1,5 @@
 
-    const app = new Realm.App({ id: "nanofabrication-1-qrqzqui" }); // Replace with your MongoDB Realm App ID
+    // DELETE const app = new Realm.App({ id: "nanofabrication-1-qrqzqui" }); // Replace with your MongoDB Realm App ID
     let user = null;
 	document.addEventListener("DOMContentLoaded", function () {
 		const saveButton = document.getElementById("floating-save-button");
@@ -9,6 +9,8 @@
 			saveButton.style.display = "block";
 		});
 	});
+	
+	/* DELETE
     async function authenticateAnonymously() {
         try {
             const credentials = Realm.Credentials.anonymous();
@@ -18,7 +20,7 @@
             console.error("Failed to authenticate anonymously:", error);
             return null;
         }
-    }
+    }*/
 
     function newLogsheet() {
         document.getElementById('logsheet-title').value = '';
@@ -47,7 +49,11 @@
 
     async function loadLogsheetTitles() {
         try {
-            const response = await app.currentUser.functions.getAllLogsheetTitles();
+            // DELETE const response = await app.currentUser.functions.getAllLogsheetTitles();
+			const response = await fetch(`/api/getAllLogsheetTitles`, {
+				method: "GET",
+				headers: { "Accept": "application/json" }
+			});
             const logsheetList = document.getElementById('logsheet-list');
             logsheetList.innerHTML = '';
 
@@ -82,7 +88,11 @@
 
     async function selectLogsheet(title) {
         try {
-            const response = await app.currentUser.functions.getLogsheetByTitle(title);
+            // DELETE const response = await app.currentUser.functions.getLogsheetByTitle(title);
+			const response = await fetch(`/api/getLogsheetByTitle?title=${encodeURIComponent(title)}`, {
+				method: "GET",
+				headers: { "Accept": "application/json" }
+			});
             if (response.success) {
                 editLogsheet(response.data._id.toString());
             } else {
@@ -200,8 +210,12 @@
 
     // Call the backend to save the template
     try {
-        const response = await app.currentUser.functions.saveTemplate(template);
-
+        // DELETE const response = await app.currentUser.functions.saveTemplate(template);
+		const response = await fetch("/api/saveTemplate", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(template)
+		});
         if (response.success) {
             alert("Template saved successfully!");
         } else {
@@ -215,7 +229,7 @@
 }
 
 
-async function uploadSmallFile(file, filename) {
+async function readSmallFile(file, filename) {
     // Convert the file to base64 (this will also handle binary data)
     const reader = new FileReader();
 
@@ -244,10 +258,18 @@ async function uploadSmallFile(file, filename) {
             alert("Please select a file before uploading.");
             return;
         }
-		const { base64Data, filename } = await uploadSmallFile(file, file.name);
+		const { base64Data, filename } = await readSmallFile(file, file.name);
 		const fileNameIndicator = attachmentItem.querySelector('.file-name');
         try {
-			const response = await app.currentUser.functions.upload(base64Data, filename);
+			// DELETE const response = await app.currentUser.functions.upload(base64Data, filename);
+			const response = await fetch("/api/upload", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: {
+					"base64Data":base64Data,
+					"filename":filename
+				}
+			});
 			if (response.success) {
 				fileNameIndicator.textContent = `File: ${file.name} (Uploaded)`;
 				attachmentItem.querySelector('input[name=file-id]').value=response.fileId;
@@ -267,8 +289,11 @@ async function uploadSmallFile(file, filename) {
 async function downloadAttachment(fileId) {
     try {
         // Call the MongoDB App Services function to get the file data
-        const response = await app.currentUser.functions.download(fileId);
-
+        // DELETE const response = await app.currentUser.functions.download(fileId);
+		const response = await fetch(`/api/download?fileId=${encodeURIComponent(fileId)}`, {
+			method: "GET",
+			headers: { "Accept": "application/octet-stream" }
+		});
         if (response.success) {
             // Create a downloadable link using the base64 data
             const a = document.createElement("a");
@@ -351,7 +376,13 @@ async function downloadAttachment(fileId) {
             items
         };
 
-        const response = await app.currentUser.functions.saveLogsheet(logsheet);
+        // DELETE const response = await app.currentUser.functions.saveLogsheet(logsheet);
+		const response = await fetch("/api/saveLogsheet", {
+			method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(logsheet)
+			});
+
         if (response.success) {
             document.getElementById('logsheet-id').value = response.objectId.toString();
 			alert("Saved!");
@@ -363,14 +394,17 @@ async function downloadAttachment(fileId) {
 
     async function deleteLogsheet() {
         const logsheetId = document.getElementById('logsheet-id').value;
-		const response = await app.currentUser.functions.deleteLogsheet(logsheetId);
+		// DELETE const response = await app.currentUser.functions.deleteLogsheet(logsheetId);
+		const response = await fetch(`/api/deleteLogsheetById?id=${encodeURIComponent(logsheetId)}`, {
+			method: "DELETE"
+		});
         if (response) {
             alert("deleted!");
         } else {
             console.error("Deleting logsheet failed:", response.error);
         }
     }
-
+/* DELETE
     async function loadLogsheets() {
         const response = await app.currentUser.functions.getLogsheets();
         const logsheetContainer = document.getElementById('logsheet-container');
@@ -400,7 +434,7 @@ async function downloadAttachment(fileId) {
             console.error("Fetching logsheets failed:", response.error);
         }
     }
-
+*/
     async function editLogsheet(logsheetId) {
         try {
             const response = await app.currentUser.functions.getLogsheet(logsheetId);
@@ -467,13 +501,14 @@ async function downloadAttachment(fileId) {
     }
 
     window.onload = async function() {
-        await authenticateAnonymously();
+		/* DELETE
+	   await authenticateAnonymously();
         if (user) {
             console.log("User ID:", user.id);
             //loadLogsheets();
-        }
+        }*/
     }
-
+/* DELETE
     async function searchLogsheets() {
         const title = document.getElementById('search-title').value.trim();
 
@@ -518,6 +553,7 @@ async function downloadAttachment(fileId) {
             return { error: error.toString() };
         }
     }
+	*/
 	
 	async function loadFromTemplate(button) {
     // Store the button's parent element to populate later when the user selects a template
@@ -541,8 +577,11 @@ function closeTemplateModal() {
 async function loadTemplateTitles() {
     try {
         // Fetch the list of template titles from the backend
-        const response = await app.currentUser.functions.getAllTemplateTitles();
-
+        // DELETE const response = await app.currentUser.functions.getAllTemplateTitles();
+		const response = await fetch(`/api/getAllTemplateTitles`, {
+			method: "GET",
+			headers: { "Accept": "application/json" }
+		});
         const templateList = document.getElementById('template-list');
         templateList.innerHTML = ''; // Clear any existing templates
 
@@ -581,8 +620,15 @@ function filterTemplates() {
 async function selectTemplate(title) {
     // Fetch the template by its title
     try {
-        const response = await app.currentUser.functions.getTemplateByTitle(title);
+        // DELETE const response = await app.currentUser.functions.getTemplateByTitle(title);
+		
+		
+		const response = await fetch(`/api/getTemplateByTitle?title=${encodeURIComponent(title)}`, {
+			method: "GET",
+			headers: { "Accept": "application/json" }
+		});
 
+		
         if (response.success && response.data) {
             const template = response.data;
 
@@ -608,8 +654,10 @@ async function deleteTemplate(title) {
     if (!confirm(`Are you sure you want to delete template "${title}"?`)) return;
 
     try {
-        const response = await app.currentUser.functions.deleteTemplateByTitle(title); // Call backend function
-
+        // DELETE const response = await app.currentUser.functions.deleteTemplateByTitle(title); // Call backend function
+		 const response = await fetch(`/api/deleteTemplateByTitle?title=${encodeURIComponent(title)}`, {
+			method: "DELETE"
+		});
         if (response.success) {
             alert("Template deleted successfully!");
             loadTemplateTitles(); // Refresh template list after deletion

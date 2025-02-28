@@ -3,7 +3,7 @@ let cachedClient = null;
 
 export default async function handler(req, res) {
     var dbName = "logbook";
-	var collName = "logsheets";
+	var collName = "templates";
 	if (req.method !== "GET") {
         return res.status(405).json({ success: false, error: "Method Not Allowed" });
     }

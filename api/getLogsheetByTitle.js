@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     }
 
 	try {
-        const { title } = req.body;
+        const { title } = req.query;
         if (!title) {
             return res.status(400).json({ success: false, error: "Title is required" });
         }
@@ -20,9 +20,9 @@ export default async function handler(req, res) {
         } 
 
         const db = cachedClient.db(dbName); 
-        const titles = await db.collection(collName).distinct("title");
+        const logsheet = await db.collection(collName).findOne({ title: title });
         
-        res.status(200).json({ success: true, data: titles });
+        res.status(200).json({ success: true, data: logsheet });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
