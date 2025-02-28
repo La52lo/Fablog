@@ -20,7 +20,7 @@ module.exports = async function handler(req, res) {
         } 
 
         const db = cachedClient.db(dbName);
-		const insertResult = await collection.insertOne(template)
+		const insertResult = await db.collection(collName).insertOne(template)
 		
         return res.status(200).json({ success: true, objectId: insertResult.title });
     } catch (error) {
