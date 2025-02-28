@@ -16,7 +16,7 @@ module.exports = async function handler(req, res) {
 		
 		let objectId;
 		if (logsheet._id) {
-				objectId = new BSON.ObjectId(logsheet._id);
+			objectId = new ObjectId(logsheet._id);
 		}
 		
         if (!cachedClient) {
