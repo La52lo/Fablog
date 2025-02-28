@@ -49,6 +49,10 @@ module.exports = async function handler(req, res) {
 		}
         return res.status(200).json({ success: true, objectId: objectId.toString() });
     } catch (error) {
-        return res.status(500).json({ success: false, error:"Saving logsheet failed: "  + error.message });
+        if (error.code === 11000) {
+            return res.status(409).json({ success: false, error: "Logsheet title already exists. Choose a different title." });
+        }
+
+        return res.status(500).json({ success: false, error: error.message });
     }
 }
