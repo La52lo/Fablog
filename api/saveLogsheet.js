@@ -33,7 +33,7 @@ export default async function handler(req, res) {
 			delete logsheet._id; // Remove the _id field from the update data
 
 			// Perform the update without modifying _id
-			const updateResult = await collection.updateOne(
+			const updateResult = await db.collection(collName).updateOne(
 				{ _id: objectId },  // Query by the original _id
 				{ $set: logsheet },            // Update only the other fields  
 				{ upsert: true }           // Create if doesn't exist (upsert)
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
 			
 		} else {
 				delete logsheet._id; // This ensures MongoDB generates a new ObjectId
-				const insertResult = await collection.insertOne(logsheet);
+				const insertResult = await db.collection(collName).insertOne(logsheet);
 				objectId = insertResult.insertedId;
 		}
         return res.status(200).json({ success: true, objectId: objectId.toString() });
