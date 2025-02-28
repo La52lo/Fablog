@@ -56,9 +56,9 @@
 			});
             const logsheetList = document.getElementById('logsheet-list');
             logsheetList.innerHTML = '';
-
-            if (response.success && response.data.length > 0) {
-                response.data.forEach(title => {
+			const jsonData = await response.json();
+            if (jsonData.success && jsonData.data.length > 0) {
+                jsonData.data.forEach(title => {
                     const li = document.createElement('li');
                     li.textContent = title;
                     li.onclick = () => {
