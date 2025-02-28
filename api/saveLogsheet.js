@@ -1,7 +1,7 @@
 const { MongoClient } = require("mongodb");
 let cachedClient = null;
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     var dbName = "logbook";
 	var collName = "logsheets";
 	if (req.method !== "POST") {
