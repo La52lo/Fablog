@@ -24,6 +24,10 @@ module.exports = async function handler(req, res) {
 		
         return res.status(200).json({ success: true, objectId: insertResult.title });
     } catch (error) {
-        return res.status(500).json({ error: "Failed to save template: " + error.message });
+        if (error.code === 11000) {
+            return res.status(409).json({ success: false, error: "Template title already exists. Choose a different title." });
+        }
+
+        return res.status(500).json({ success: false, error: error.message });
     }
 }
