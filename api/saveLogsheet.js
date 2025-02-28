@@ -15,8 +15,10 @@ module.exports = async function handler(req, res) {
         }
 		
 		let objectId;
+		const {ObjectId} = require('mongodb');
 		if (logsheet._id) {
-			objectId = new ObjectID(logsheet._id);
+			objectId = new ObjectId(logsheet._id);
+			
 		}
 		
         if (!cachedClient) {
