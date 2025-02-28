@@ -54,6 +54,7 @@
 				method: "GET",
 				headers: { "Accept": "application/json" }
 			});
+			
             const logsheetList = document.getElementById('logsheet-list');
             logsheetList.innerHTML = '';
 			const jsonData = await response.json();
@@ -93,10 +94,11 @@
 				method: "GET",
 				headers: { "Accept": "application/json" }
 			});
-            if (response.success) {
-                editLogsheet(response.data._id.toString());
+			const jsonData = await response.json();
+            if (jsonData.success) {
+                editLogsheet(jsonData.data._id.toString());
             } else {
-                console.error("Failed to load logsheet:", response.error);
+                console.error("Failed to load logsheet:", jsonData.error);
             }
         } catch (error) {
             console.error("Error selecting logsheet:", error.message);
@@ -216,11 +218,12 @@
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(template)
 		});
-        if (response.success) {
+		const jsonData = await response.json();
+        if (jsonData.success) {
             alert("Template saved successfully!");
         } else {
-            console.error("Failed to save template:", response.error);
-            alert("Failed to save template: " + response.error);
+            console.error("Failed to save template:", jsonData.error);
+            alert("Failed to save template: " + jsonData.error);
         }
     } catch (error) {
         console.error("Error saving template:", error.message);
@@ -270,11 +273,12 @@ async function readSmallFile(file, filename) {
 					"filename":filename
 				}
 			});
-			if (response.success) {
+			const jsonData = await response.json();
+			if (jsonData.success) {
 				fileNameIndicator.textContent = `File: ${file.name} (Uploaded)`;
-				attachmentItem.querySelector('input[name=file-id]').value=response.fileId;
+				attachmentItem.querySelector('input[name=file-id]').value=jsonData.fileId;
 			} else {
-				console.error("Uploading attachment failed:", response.error);
+				console.error("Uploading attachment failed:", jsonData.error);
 				fileNameIndicator.textContent = "Upload failed";
 			}
 		} catch (error) {
@@ -294,12 +298,13 @@ async function downloadAttachment(fileId) {
 			method: "GET",
 			headers: { "Accept": "application/octet-stream" }
 		});
-        if (response.success) {
+		const jsonData = await response.json();
+        if (jsonData.success) {
             // Create a downloadable link using the base64 data
             const a = document.createElement("a");
-            const base64Data = response.fileData;
-            const contentType = response.contentType || "application/octet-stream";
-            const fileName = response.fileName;
+            const base64Data = jsonData.fileData;
+            const contentType = jsonData.contentType || "application/octet-stream";
+            const fileName = jsonData.fileName;
 
             // Construct the href for the download link
             a.href = `data:${contentType};base64,${base64Data}`;
@@ -310,7 +315,7 @@ async function downloadAttachment(fileId) {
             a.click();
             document.body.removeChild(a);
         } else {
-            alert("Failed to download file: " + response.error);
+            alert("Failed to download file: " + jsonData.error);
         }
     } catch (error) {
         console.error("Error downloading file:", error.message);
@@ -382,13 +387,13 @@ async function downloadAttachment(fileId) {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(logsheet)
 			});
-
-        if (response.success) {
-            document.getElementById('logsheet-id').value = response.objectId.toString();
+		const jsonData = await response.json();
+        if (jsonData.success) {
+            document.getElementById('logsheet-id').value = jsonData.objectId.toString();
 			alert("Saved!");
         } else {
-            console.error("Saving logsheet failed:", response.error);
-			alert("Saving failed!", response.error);
+            console.error("Saving logsheet failed:", jsonData.error);
+			alert("Saving failed!", jsonData.error);
         }
     }
 
@@ -401,7 +406,7 @@ async function downloadAttachment(fileId) {
         if (response) {
             alert("deleted!");
         } else {
-            console.error("Deleting logsheet failed:", response.error);
+            console.error("Deleting logsheet failed:", jsonData.error);
         }
     }
 /* DELETE
@@ -410,8 +415,8 @@ async function downloadAttachment(fileId) {
         const logsheetContainer = document.getElementById('logsheet-container');
         logsheetContainer.innerHTML = '';
 
-        if (response.success) {
-            response.logsheets.forEach(logsheet => {
+        if (jsonData.success) {
+            jsonData.logsheets.forEach(logsheet => {
                 const logsheetItem = document.createElement('div');
                 logsheetItem.className = 'item';
                 logsheetItem.innerHTML = `
@@ -431,19 +436,19 @@ async function downloadAttachment(fileId) {
                 logsheetContainer.appendChild(logsheetItem);
             });
         } else {
-            console.error("Fetching logsheets failed:", response.error);
+            console.error("Fetching logsheets failed:", jsonData.error);
         }
     }
 */
     async function editLogsheet(logsheetId) {
         try {
             const response = await app.currentUser.functions.getLogsheet(logsheetId);
-
-            if (!response.success) {
-                throw new Error(response.error || "Failed to fetch the logsheet.");
+			const jsonData = await response.json();
+            if (!jsonData.success) {
+                throw new Error(jsonData.error || "Failed to fetch the logsheet.");
             }
 
-            const logsheet = response.data;
+            const logsheet = jsonData.data;
 
             document.getElementById('logsheet-title').value = logsheet.title || '';
             document.getElementById('logsheet-author').value = logsheet.author || '';
@@ -584,10 +589,10 @@ async function loadTemplateTitles() {
 		});
         const templateList = document.getElementById('template-list');
         templateList.innerHTML = ''; // Clear any existing templates
-
-        if (response.success && response.data.length > 0) {
+		const jsonData = await response.json();
+        if (jsonData.success && jsonData.data.length > 0) {
             // Populate the template list with the fetched titles
-            response.data.forEach(title => {
+            jsonData.data.forEach(title => {
                 const li = document.createElement('li');
 				li.innerHTML = `
                 <span onclick="selectTemplate('${title}')">${title}</span> 
@@ -628,9 +633,9 @@ async function selectTemplate(title) {
 			headers: { "Accept": "application/json" }
 		});
 
-		
-        if (response.success && response.data) {
-            const template = response.data;
+		const jsonData = await response.json();
+        if (jsonData.success && jsonData.data) {
+            const template = jsonData.data;
 
             // Populate the form fields in the target logsheet step
             const parentItem = window.templateTargetItem;
@@ -642,7 +647,7 @@ async function selectTemplate(title) {
             alert("Template loaded successfully!");
             closeTemplateModal();
         } else {
-            alert("Template not found or an error occurred: " + response.error);
+            alert("Template not found or an error occurred: " + jsonData.error);
         }
     } catch (error) {
         console.error("Error loading template:", error.message);
@@ -658,11 +663,12 @@ async function deleteTemplate(title) {
 		 const response = await fetch(`/api/deleteTemplateByTitle?title=${encodeURIComponent(title)}`, {
 			method: "DELETE"
 		});
-        if (response.success) {
+		const jsonData = await response.json();
+        if (jsonData.success) {
             alert("Template deleted successfully!");
             loadTemplateTitles(); // Refresh template list after deletion
         } else {
-            alert("Failed to delete template: " + response.error);
+            alert("Failed to delete template: " + jsonData.error);
         }
     } catch (error) {
         console.error("Error deleting template:", error);
