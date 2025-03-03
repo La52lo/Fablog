@@ -18,21 +18,13 @@ async function initAuth0() {
 }
 
 
-const auth0Client = initAuth0(); // Ensure Auth0 client is ready
 
-// Login function
-async function login() {
-    await auth0Client.loginWithRedirect();
-}
 
-// Logout function
-async function logout() {
-    await auth0Client.logout({ returnTo: window.location.origin });
-}
 
 // Check if user is logged in and update UI
 async function checkUser() {
-    const isAuthenticated = await auth0Client.isAuthenticated();
+    const auth0Client = await initAuth0(); // Ensure Auth0 client is ready
+	const isAuthenticated = await auth0Client.isAuthenticated();
 
     if (isAuthenticated) {
         const user = await auth0Client.getUser();
