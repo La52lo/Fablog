@@ -392,7 +392,7 @@ async function downloadAttachment(fileId) {
         if (jsonData.success) {
             document.getElementById('logsheet-id').value = jsonData.objectId.toString();
 			alert("Saved!");
-			saveButton.style.display = "none";
+			document.getElementById("floating-save-button").style.display = "none";
         } else {
             console.error("Saving logsheet failed:", jsonData.error);
 			alert("Saving failed!", jsonData.error);
@@ -453,7 +453,7 @@ async function downloadAttachment(fileId) {
 			document.getElementById('logsheet-id').value = logsheet._id;
 
             document.getElementById('items-container').innerHTML = '';
-			saveButton.style.display = "none";
+			document.getElementById("floating-save-button").style.display = "none";
             logsheet.items.forEach(item => {
                 if (item.type === 'step') {
                     addLogsheetStep();
