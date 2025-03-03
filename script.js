@@ -262,7 +262,7 @@ async function readSmallFile(file, filename) {
             alert("Please select a file before uploading.");
             return;
         }
-		const { base64Data, filename } = await readSmallFile(file, file.name);
+		const { base64Data, fileName } = await readSmallFile(file, file.name);
 		const fileNameIndicator = attachmentItem.querySelector('.file-name');
         try {
 			// DELETE const response = await app.currentUser.functions.upload(base64Data, filename);
