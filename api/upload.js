@@ -26,7 +26,7 @@ module.exports = async function handler(req, res) {
             cachedClient = new MongoClient(process.env.MONGO_URI);
             await cachedClient.connect();
         } 
-
+		const {Binary} = require('mongodb');
         const db = cachedClient.db(dbName);
 		const fileDocument = {
             filename: fileName,
