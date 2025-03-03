@@ -11,6 +11,8 @@ async function initAuth0() {
     return auth0Client;
 }
 
+const auth0Client = await initAuth0(); // Ensure Auth0 client is ready
+
 // Login function
 async function login() {
     await auth0Client.loginWithRedirect();
