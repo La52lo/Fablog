@@ -25,6 +25,30 @@
 <button id="floating-save-button" onclick="saveLogsheet()">
     <i class="fas fa-save"></i> Save
 </button>
+<button id="login-btn">Login</button>
+<button id="logout-btn" style="display: none;">Logout</button>
+<p id="user-info"></p>
+
+<script type="module">
+    import { initAuth, login, logout, getUser } from "./auth.js";
+
+    document.getElementById("login-btn").addEventListener("click", login);
+    document.getElementById("logout-btn").addEventListener("click", logout);
+
+    async function checkUser() {
+        await initAuth();
+        const user = await getUser();
+
+        if (user) {
+            document.getElementById("user-info").innerText = `Logged in as: ${user.email}`;
+            document.getElementById("login-btn").style.display = "none";
+            document.getElementById("logout-btn").style.display = "block";
+        }
+    }
+    
+    checkUser();
+</script>
+
 <div class="container" id="logsheet-container">
     <div class="header">
         <label for="logsheet-title">logsheet Name</label>
