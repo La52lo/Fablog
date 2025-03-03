@@ -1,14 +1,11 @@
-let auth0Client;
 
-async function initAuth() {
-    auth0Client = await createAuth0Client({
-        domain: process.env.AUTH0_DOMAIN,
-        clientId: process.env.AUTH0_CLIENT_ID,
-        authorizationParams: {
-            redirect_uri: window.location.origin
-        }
-    });
-}
+const auth0Client = auth0.createAuth0Client({
+    domain: process.env.AUTH0_DOMAIN,
+    clientId: process.env.AUTH0_CLIENT_ID,
+    authorizationParams: {
+        redirect_uri: window.location.origin
+    }
+});
 
 
 // Login function
