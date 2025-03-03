@@ -1,7 +1,7 @@
 
 const auth0Client = auth0.createAuth0Client({
-    domain: process.env.AUTH0_DOMAIN,
-    clientId: process.env.AUTH0_CLIENT_ID,
+    domain: "dev-16kzyoiz8sa3k8ht.us.auth0.com",
+    clientId: "qd9Sjyu0GDTqs3Kj9oLqxUP5zLdz2096",
     authorizationParams: {
         redirect_uri: window.location.origin
     }
