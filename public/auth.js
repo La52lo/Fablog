@@ -1,30 +1,32 @@
+
+let auth0Client; // Global variable for Auth0 client
+
+// Initialize Auth0 Client
 async function initAuth0() {
-    // Wait for Auth0 Client to initialize
-	try {
-		const auth0Client = await auth0.createAuth0Client({
-			domain: "dev-16kzyoiz8sa3k8ht.us.auth0.com",
-			clientId: "qd9Sjyu0GDTqs3Kj9oLqxUP5zLdz2096",
-			authorizationParams: {
-				redirect_uri: window.location.origin
-			}
-		});
+    auth0Client = await auth0.createAuth0Client({
+        domain: "dev-16kzyoiz8sa3k8ht.us.auth0.com",
+		clientId: "qd9Sjyu0GDTqs3Kj9oLqxUP5zLdz2096",
+        authorizationParams: {
+            redirect_uri: window.location.origin
+        }
+    });
 
-		return auth0Client;
-	}catch(error){
-            return error.message;
-      }
-
-	
+    checkUser(); // Check authentication status after initializing Auth0
 }
 
+// Login Function
+async function login() {
+    await auth0Client.loginWithRedirect();
+}
 
+// Logout Function
+async function logout() {
+    await auth0Client.logout({ returnTo: window.location.origin });
+}
 
-
-
-// Check if user is logged in and update UI
+// Check User Authentication Status
 async function checkUser() {
-    const auth0Client = await initAuth0(); // Ensure Auth0 client is ready
-	const isAuthenticated = await auth0Client.isAuthenticated();
+    const isAuthenticated = await auth0Client.isAuthenticated();
 
     if (isAuthenticated) {
         const user = await auth0Client.getUser();
@@ -37,5 +39,9 @@ async function checkUser() {
     }
 }
 
-// Run checkUser on page load
-window.onload = checkUser;
+// Initialize authentication on page load
+window.onload = initAuth0;
+
+// Attach event listeners to buttons
+document.getElementById("login-btn").addEventListener("click", login);
+document.getElementById("logout-btn").addEventListener("click", logout);
