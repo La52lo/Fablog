@@ -31,13 +31,14 @@ module.exports = async function handler(req, res) {
 
         // Access the binary data correctly
         const binaryData = fileDocument.fileData;
+		
 
         if (!binaryData) {
             return { success: false, error: "Binary data not found in fileData field" };
         }
 		
-		
-		const base64Data = binaryData.toBase64();
+		const base64Data = fileDocument.fileData.buffer.toString("base64");
+		//const base64Data = binaryData.toBase64();
 
         let returnData = {
             success: true,
