@@ -16,7 +16,7 @@
 
 </head>
 <body>
-
+<p id="user-info"></p>
 <div class="toolbar">
     <button onclick="newLogsheet()"><i class="fas fa-plus-circle"></i> New Logsheet</button>
 	<button onclick="openLoadModal()"><i class="fas fa-folder-open"></i> Load Logsheet</button>
@@ -29,26 +29,10 @@
 <button id="floating-save-button" onclick="saveLogsheet()">
     <i class="fas fa-save"></i> Save
 </button>
-<p id="user-info"></p>
 
 <script type="module">
-    //import { initAuth, login, logout, getUser } from "./auth.js";
-
     document.getElementById("login-btn").addEventListener("click", login);
     document.getElementById("logout-btn").addEventListener("click", logout);
-
-    async function checkUser() {
-        await initAuth();
-        const user = await getUser();
-
-        if (user) {
-            document.getElementById("user-info").innerText = `Logged in as: ${user.email}`;
-            document.getElementById("login-btn").style.display = "none";
-            document.getElementById("logout-btn").style.display = "block";
-        }
-    }
-    
-    checkUser();
 </script>
 
 <div class="container" id="logsheet-container">

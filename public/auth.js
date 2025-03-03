@@ -1,5 +1,3 @@
-//import { createAuth0Client } from "./auth0-spa-js.production.js";
-
 let auth0Client;
 
 export async function initAuth() {
@@ -12,20 +10,31 @@ export async function initAuth() {
     });
 }
 
-export async function login() {
+
+// Login function
+async function login() {
     await auth0Client.loginWithRedirect();
 }
 
-export async function logout() {
+// Logout function
+async function logout() {
     await auth0Client.logout({ returnTo: window.location.origin });
 }
 
-export async function getUser() {
-    return await auth0Client.getUser();
+// Check if user is logged in and update UI
+async function checkUser() {
+    const isAuthenticated = await auth0Client.isAuthenticated();
+
+    if (isAuthenticated) {
+        const user = await auth0Client.getUser();
+        document.getElementById("user-info").innerText = `Logged in as: ${user.email}`;
+        document.getElementById("login-btn").style.display = "none";
+        document.getElementById("logout-btn").style.display = "block";
+    } else {
+        document.getElementById("login-btn").style.display = "block";
+        document.getElementById("logout-btn").style.display = "none";
+    }
 }
 
-export async function getToken() {
-    return await auth0Client.getTokenSilently();
-}
-
-
+// Run checkUser on page load
+window.onload = checkUser;
