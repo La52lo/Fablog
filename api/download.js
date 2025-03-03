@@ -22,8 +22,8 @@ module.exports = async function handler(req, res) {
 		} else { 
 			return { success: false, error: "FileId not found" };
         }
-		/* DELETE  */  return res.status(200).json("so far so good");
-		const fileDocument = await db.collection(collName).findOne({ _id: fileId });
+		
+		const fileDocument = await db.collection(collName).findOne({ _id: objectId });
 
         if (!fileDocument || !fileDocument.fileData) {
             return { success: false, error: "File not found" };
