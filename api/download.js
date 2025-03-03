@@ -35,6 +35,8 @@ module.exports = async function handler(req, res) {
         if (!binaryData) {
             return { success: false, error: "Binary data not found in fileData field" };
         }
+		/* DELETE  */  return res.status(200).json("so far so good");
+		
 		const base64Data = binaryData.toBase64();
 
         let returnData = {
