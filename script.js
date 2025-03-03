@@ -233,14 +233,14 @@
 }
 
 
-async function readSmallFile(file, filename) {
+async function readSmallFile(file, fileName) {
     // Convert the file to base64 (this will also handle binary data)
     const reader = new FileReader();
 
     return new Promise((resolve, reject) => {
         reader.onloadend = async function() {
             const base64Data = reader.result.split(",")[1]; // Strip the base64 metadata
-            resolve({ base64Data, filename });
+            resolve({ base64Data, fileName });
         };
 
         reader.onerror = reject;
