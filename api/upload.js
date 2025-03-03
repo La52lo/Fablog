@@ -17,7 +17,8 @@ module.exports = async function handler(req, res) {
 		
 		//const {base64Data, fileName} = req.body;
 		//const binaryData = BSON.Binary.fromBase64(base64Data);
-		const base64String = fileData.split(",")[1];
+		//const base64String = fileData.split(",")[1];
+		const base64String = fileData.includes(",") ? fileData.split(",")[1] : fileData;
 
         // Convert Base64 to Binary
         const binaryData = Buffer.from(base64String, "base64");
