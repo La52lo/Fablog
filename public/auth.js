@@ -1,12 +1,15 @@
+async function initAuth0() {
+    // Wait for Auth0 Client to initialize
+    const auth0Client = await auth0.createAuth0Client({
+        domain: "dev-16kzyoiz8sa3k8ht.us.auth0.com",
+		clientId: "qd9Sjyu0GDTqs3Kj9oLqxUP5zLdz2096",
+        authorizationParams: {
+            redirect_uri: window.location.origin
+        }
+    });
 
-const auth0Client = auth0.createAuth0Client({
-    domain: "dev-16kzyoiz8sa3k8ht.us.auth0.com",
-    clientId: "qd9Sjyu0GDTqs3Kj9oLqxUP5zLdz2096",
-    authorizationParams: {
-        redirect_uri: window.location.origin
-    }
-});
-
+    return auth0Client;
+}
 
 // Login function
 async function login() {
