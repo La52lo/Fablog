@@ -22,7 +22,7 @@ module.exports = async function handler(req, res) {
 		} else { 
 			return { success: false, error: "FileId not found" };
         }
-		
+		/* DELETE  */  return res.status(200).json("so far so good");
 		const fileDocument = await db.collection(collName).findOne({ _id: fileId });
 
         if (!fileDocument || !fileDocument.fileData) {
@@ -35,7 +35,7 @@ module.exports = async function handler(req, res) {
         if (!binaryData) {
             return { success: false, error: "Binary data not found in fileData field" };
         }
-		/* DELETE  */  return res.status(200).json("so far so good");
+		
 		
 		const base64Data = binaryData.toBase64();
 
