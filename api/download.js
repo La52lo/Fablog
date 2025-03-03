@@ -16,7 +16,14 @@ module.exports = async function handler(req, res) {
 
         const db = cachedClient.db(dbName);
 		const { fileId } = req.query;
-		const fileDocument = await db.collection(collName).findOne({ _id: BSON.ObjectId(fileId) });
+		const {ObjectId} = require('mongodb');
+		if (fileId) {
+			objectId = new ObjectId(fileId);
+		} else { 
+			return { success: false, error: "FileId not found" };
+        }
+		
+		const fileDocument = await db.collection(collName).findOne({ _id: fileId });
 
         if (!fileDocument || !fileDocument.fileData) {
             return { success: false, error: "File not found" };
