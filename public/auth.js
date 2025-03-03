@@ -1,6 +1,6 @@
 let auth0Client;
 
-export async function initAuth() {
+async function initAuth() {
     auth0Client = await createAuth0Client({
         domain: process.env.AUTH0_DOMAIN,
         clientId: process.env.AUTH0_CLIENT_ID,
