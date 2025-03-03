@@ -9,8 +9,18 @@ module.exports = async function handler(req, res) {
     }
 	
     try {		
-        const {base64Data, fileName} = req.body;
-		const binaryData = BSON.Binary.fromBase64(base64Data);
+        const { fileName, fileData } = req.body;
+
+        if (!fileName || !fileData) {
+            return res.status(400).json({ success: false, error: "Missing file data or filename." });
+        }
+		
+		//const {base64Data, fileName} = req.body;
+		//const binaryData = BSON.Binary.fromBase64(base64Data);
+		const base64String = fileData.split(",")[1];
+
+        // Convert Base64 to Binary
+        const binaryData = Buffer.from(base64String, "base64");
 		if (!cachedClient) {
             cachedClient = new MongoClient(process.env.MONGO_URI);
             await cachedClient.connect();
@@ -19,7 +29,7 @@ module.exports = async function handler(req, res) {
         const db = cachedClient.db(dbName);
 		const fileDocument = {
             filename: fileName,
-            fileData: binaryData,  // Store the binary data directly
+            fileData: new Binary(binaryData),  // Store the binary data directly
             uploadDate: new Date()
         };
 

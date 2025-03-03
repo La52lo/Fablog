@@ -269,10 +269,8 @@ async function readSmallFile(file, filename) {
 			const response = await fetch("/api/upload", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: {
-					"base64Data":base64Data,
-					"filename":filename
-				}
+				body: JSON.stringify({ fileName, fileData: base64Data })
+				
 			});
 			const jsonData = await response.json();
 			if (jsonData.success) {
