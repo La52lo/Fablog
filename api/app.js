@@ -20,19 +20,18 @@ const config = {
 app.use(auth(config));
 
 // Public Route
-app.get('/', (req, res) => {
-  res.send('<h1>Welcome to the Logsheet Manager</h1>');
-});
 
 const apiEndpoints = ["getAllLogsheetTitles","getLogsheetByTitle",
 			"getTemplateByTitle","deleteLogsheetById",
 			"deleteTemplateById","download","upload",
-			"saveLogsheet","saveTemplate"]
-
-// Other routes (like your logsheet API endpoints) can be added here
+			"saveLogsheet","saveTemplate"];
+let handler =  (req, res) => {res.json(req.oidc.user);};
 apiEndpoints.forEach(endpoint => {
-    app.get(`/{endpoint}`,  requiresAuth(), (req, res) => {
-  res.json(req.oidc.user);
-})};
-// Export the Express app wrapped in serverless-http so that Vercel can handle it as a function
+    app.get(`/{endpoint}`,requiresAuth(),handler);
+});
+
+// Default root route
+app.get('/', (req, res) => res.send('Welcome to the API'));
+
+// Export the Express app wrapped for Vercel
 module.exports = serverless(app);
