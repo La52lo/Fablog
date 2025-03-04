@@ -33,11 +33,6 @@ const apiEndpoints = ["getAllLogsheetTitles","getLogsheetByTitle",
 apiEndpoints.forEach(endpoint => {
     app.get(`/{endpoint}`,  requiresAuth(), (req, res) => {
   res.json(req.oidc.user);
-});
-
-
-
-
-
+})};
 // Export the Express app wrapped in serverless-http so that Vercel can handle it as a function
 module.exports = serverless(app);
