@@ -1,6 +1,5 @@
 const express = require('express');
-const serverless = require('serverless-http');
-const { auth, requiresAuth } = require('express-openid-connect');
+
 
 
 const app = express();
