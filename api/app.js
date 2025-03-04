@@ -13,7 +13,7 @@ const config = {
   secret: process.env.AUTH0_CLIENT_SECRET,
   baseURL: process.env.BASE_URL,           
   clientID: process.env.AUTH0_CLIENT_ID,
-  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
+  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL
 };
 
 // Initialize the Auth0 middleware
@@ -25,9 +25,9 @@ const apiEndpoints = ["getAllLogsheetTitles","getLogsheetByTitle",
 			"getTemplateByTitle","deleteLogsheetById",
 			"deleteTemplateById","download","upload",
 			"saveLogsheet","saveTemplate"];
-let handler =  (req, res) => {res.json(req.oidc.user);};
+
 apiEndpoints.forEach(endpoint => {
-    app.get(`/{endpoint}`,requiresAuth(),handler);
+    app.get(`/{endpoint}`,requiresAuth(),(req, res) => {res.json(req.oidc.user);});
 });
 
 // Default root route
