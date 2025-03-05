@@ -5,7 +5,7 @@ const { auth, requiresAuth } = require('express-openid-connect');
 
 const app = express();
 app.use(express.json());
-
+/*
 // Configure Auth0 options
 const config = {
   authRequired: false, 
@@ -29,9 +29,9 @@ const apiEndpoints = ["getAllLogsheetTitles","getLogsheetByTitle",
 apiEndpoints.forEach(endpoint => {
     app.get(`/{endpoint}`,requiresAuth(),(req, res) => {res.json(req.oidc.user);});
 });
-
+*/
 // Default root route
-app.get('/hello', (req, res) => res.send('Welcome to the API'));
+app.get('/', (req, res) => res.send('Welcome to the API'));
 
 // Export the Express app wrapped for Vercel
 module.exports = serverless(app);
