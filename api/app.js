@@ -1,37 +1,22 @@
-const express = require('express');
-const serverless = require('serverless-http');
-const { auth, requiresAuth } = require('express-openid-connect');
-
+const express = require("express");
+const serverless = require("serverless-http");
 
 const app = express();
+
+// Middleware to handle JSON
 app.use(express.json());
-/*
-// Configure Auth0 options
-const config = {
-  authRequired: false, 
-  auth0Logout: true,
-  secret: process.env.AUTH0_CLIENT_SECRET,
-  baseURL: process.env.BASE_URL,           
-  clientID: process.env.AUTH0_CLIENT_ID,
-  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL
-};
 
-// Initialize the Auth0 middleware
-app.use(auth(config));
-
-// Public Route
-
-const apiEndpoints = ["getAllLogsheetTitles","getLogsheetByTitle",
-			"getTemplateByTitle","deleteLogsheetById",
-			"deleteTemplateById","download","upload",
-			"saveLogsheet","saveTemplate"];
-
-apiEndpoints.forEach(endpoint => {
-    app.get(`/{endpoint}`,requiresAuth(),(req, res) => {res.json(req.oidc.user);});
+// Log when a request is received
+app.use((req, res, next) => {
+    console.log(`Received request: ${req.method} ${req.url}`);
+    next();
 });
-*/
-// Default root route
-app.get('/', (req, res) => res.send('Welcome to the API'));
 
-// Export the Express app wrapped for Vercel
+// Basic test route
+app.get("/", (req, res) => {
+    console.log("Sending response...");
+    res.send("Hello from Express on Vercel!");
+});
+
+// Export the Express app
 module.exports = serverless(app);
