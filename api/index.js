@@ -16,5 +16,5 @@ app.get("/", (req, res) => {
 });
 
 // Export the Express app correctly
-module.exports = serverless(app);
+module.exports = app;
 console.log("finished export");
