@@ -4,8 +4,8 @@ const app = express();
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    console.log("Sending response...");
-    res.status(200).send("Hello from Express without serverless-http!");
+    res.write("Hello from Express on Vercel!");
+    res.end(); // Ensures response is properly closed
 });
 
 // Export the Express app as a normal function
