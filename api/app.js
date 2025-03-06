@@ -1,14 +1,14 @@
 const express = require("express");
+const serverless = require("serverless-http");
 
 const app = express();
 app.use(express.json());
 
+// Test route to verify deployment
 app.get("/", (req, res) => {
-    res.write("Hello from Express on Vercel!");
-    res.end(); // Ensures response is properly closed
+    console.log("Received request: GET /");
+    res.send("Hello from Express on Vercel!");
 });
 
-// Export the Express app as a normal function
-module.exports = (req, res) => {
-    app(req, res);
-};
+// Export the Express app correctly
+module.exports = serverless(app);
