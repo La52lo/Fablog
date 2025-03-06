@@ -34,4 +34,4 @@ apiEndpoints.forEach(endpoint => {
 app.get('/', (req, res) => res.send('Welcome to the API'));
 
 // Export the Express app wrapped for Vercel
-module.exports = serverless(app);
+module.exports.handler = serverless(app);
