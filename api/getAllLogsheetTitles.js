@@ -4,6 +4,21 @@ let cachedClient = null;
 
 const authMiddleware = require("./auth");
 
+module.exports = async (req, res) => {
+    await authMiddleware(req, res);
+    const userId = req.auth.sub;
+    const { title, entries } = req.body;
+
+    try {
+        const db = await connectDB();
+        await db.collection("logsheets").insertOne({ userId, title, entries, createdAt: new Date() });
+        res.status(201).json({ success: true });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+
 module.exports = async function handler(req, res) {
     var dbName = "logbook";
 	var collName = "logsheets";
@@ -22,7 +37,7 @@ module.exports = async function handler(req, res) {
         const db = cachedClient.db(dbName); 
         const titles = await db.collection(collName).distinct("title");
         
-        res.status(200).json({ success: true, data: titles });
+        res.status(200).json({ success: true,userid:userID, data: titles });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
