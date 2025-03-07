@@ -96,7 +96,7 @@ async function loadLogsheetTitles() {
         const response = await fetch(`/api/getAllLogsheetTitles`, {
             method: "GET",
             headers: {
-                "Accept": "application/json"
+                "Accept": "application/json",
 				"Authorization": `Bearer ${localStorage.getItem("auth_token")}`
             }
         });
