@@ -4,25 +4,13 @@ let cachedClient = null;
 
 const authMiddleware = require("./auth");
 
-module.exports = async (req, res) => {
-    await authMiddleware(req, res);
-    const userId = req.auth.sub;
-    const { title, entries } = req.body;
-
-    try {
-        const db = await connectDB();
-        await db.collection("logsheets").insertOne({ userId, title, entries, createdAt: new Date() });
-        res.status(201).json({ success: true });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
-};
-
 
 module.exports = async function handler(req, res) {
     var dbName = "logbook";
 	var collName = "logsheets";
 	await authMiddleware(req, res);
+	console.log(req);
+	console.log(res);
     const userId = req.auth.sub;
 	if (req.method !== "GET") {
         return res.status(405).json({ success: false, error: "Method Not Allowed" });

@@ -19,12 +19,49 @@ function newLogsheet() {
 
 }
 
-async function login() {
-    window.location.href = "https://dev-16kzyoiz8sa3k8ht.us.auth0.com/authorize?client_id=qd9Sjyu0GDTqs3Kj9oLqxUP5zLdz2096&response_type=token&redirect_uri=" + window.location.origin;
+let auth0Client;
+
+async function initAuth0() {
+    auth0Client = await auth0.createAuth0Client({
+        domain: "dev-16kzyoiz8sa3k8ht.us.auth0.com",
+        clientId: "qd9Sjyu0GDTqs3Kj9oLqxUP5zLdz2096",
+        authorizationParams: {
+            redirect_uri: window.location.origin
+        }
+    });
+
+    // Check if redirected from login and handle the token
+    if (window.location.search.includes("code=") && window.location.search.includes("state=")) {
+        await auth0Client.handleRedirectCallback();
+        window.history.replaceState({}, document.title, "/"); // Remove Auth0 params from URL
+    }
+
+    checkUser();
 }
 
+// Login function (Redirect to Auth0 login page)
+async function login() {
+    await auth0Client.loginWithRedirect();
+}
+
+// Logout function
 async function logout() {
-    window.location.href = "https://dev-16kzyoiz8sa3k8ht.us.auth0.com/v2/logout?returnTo=" + window.location.origin;
+    await auth0Client.logout({ returnTo: window.location.origin });
+}
+
+// Check if user is authenticated
+async function checkUser() {
+    const isAuthenticated = await auth0Client.isAuthenticated();
+    
+    if (isAuthenticated) {
+        const user = await auth0Client.getUser();
+        document.getElementById("user-info").innerText = `Logged in as: ${user.email}`;
+        document.getElementById("login-btn").style.display = "none";
+        document.getElementById("logout-btn").style.display = "block";
+    } else {
+        document.getElementById("login-btn").style.display = "block";
+        document.getElementById("logout-btn").style.display = "none";
+    }
 }
 
 async function fetchLogsheets() {
@@ -59,6 +96,7 @@ async function loadLogsheetTitles() {
             method: "GET",
             headers: {
                 "Accept": "application/json"
+				"Authorization": `Bearer ${localStorage.getItem("auth_token")}`
             }
         });
 
