@@ -65,6 +65,8 @@ async function checkUser() {
     }
 }
 
+window.onload = checkUser;
+
 async function fetchLogsheets() {
     const response = await fetch("/api/getLogsheets", {
         headers: { "Authorization": `Bearer ${localStorage.getItem("auth_token")}` }
@@ -116,7 +118,7 @@ async function loadLogsheetTitles() {
             });
         } else {
             logsheetList.innerHTML = '<li>No logsheets found</li>';
-			if (jsonData.status === 401) {
+			if (response.status === 401) {
 				alert("Please log in");
 				checkUser();
 				return;
