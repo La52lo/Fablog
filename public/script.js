@@ -19,6 +19,25 @@ function newLogsheet() {
 
 }
 
+async function login() {
+    window.location.href = "https://dev-16kzyoiz8sa3k8ht.us.auth0.com/authorize?client_id=qd9Sjyu0GDTqs3Kj9oLqxUP5zLdz2096&response_type=token&redirect_uri=" + window.location.origin;
+}
+
+async function logout() {
+    window.location.href = "https://dev-16kzyoiz8sa3k8ht.us.auth0.com/v2/logout?returnTo=" + window.location.origin;
+}
+
+async function fetchLogsheets() {
+    const response = await fetch("/api/getLogsheets", {
+        headers: { "Authorization": `Bearer ${localStorage.getItem("auth_token")}` }
+    });
+    const data = await response.json();
+    console.log("Logsheets:", data);
+}
+
+document.getElementById("login-btn").addEventListener("click", login);
+document.getElementById("logout-btn").addEventListener("click", logout);
+
 function autoResizeTextarea(element) {
     element.style.height = 'auto';
     element.style.height = element.scrollHeight + 'px';
