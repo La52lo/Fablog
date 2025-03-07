@@ -8,9 +8,9 @@ const authMiddleware = require("./auth");
 module.exports = async function handler(req, res) {
     var dbName = "logbook";
 	var collName = "logsheets";
-	await authMiddleware(req, res);
-	console.log(req);
-	console.log(res);
+	const authResult = await authMiddleware(req, res);
+	if (!authResult) return; // ✅ Execution stops here if unauthorized
+
     
 	if (req.method !== "GET") {
         return res.status(405).json({ success: false, error: "Method Not Allowed" });

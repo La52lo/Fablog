@@ -59,6 +59,7 @@ async function checkUser() {
         document.getElementById("login-btn").style.display = "none";
         document.getElementById("logout-btn").style.display = "block";
     } else {
+		document.getElementById("user-info").innerText = `Logged out`;
         document.getElementById("login-btn").style.display = "block";
         document.getElementById("logout-btn").style.display = "none";
     }
@@ -115,6 +116,11 @@ async function loadLogsheetTitles() {
             });
         } else {
             logsheetList.innerHTML = '<li>No logsheets found</li>';
+			if (jsonData.status === 401) {
+				alert("Please log in");
+				checkUser();
+				return;
+			}
         }
     } catch (error) {
         console.error("Failed to load logsheet titles:", error.message);

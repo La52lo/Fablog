@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
         const token = req.headers.authorization?.split(" ")[1];
         if (!token) {
             res.status(401).json({ success: false, error: "Unauthorized: Missing token" });
-            return; // ⛔ STOP further execution
+            return false;  // ⛔ Explicitly return false
         }
 
         const decoded = jwt.verify(token, process.env.AUTH0_SECRET, { algorithms: ["RS256"] });
@@ -14,6 +14,6 @@ module.exports = async (req, res, next) => {
     } catch (error) {
         console.error("Authentication error:", error.message);
         res.status(401).json({ success: false, error: "Unauthorized: Invalid token" });
-        return; // ⛔ STOP execution after sending response
+        return false;  // ⛔ Explicitly return false
     }
 };
