@@ -84,8 +84,8 @@ function autoResizeTextarea(element) {
 }
 
 function openLoadModal() {
-    document.getElementById('loadModal').style.display = 'block';
     loadLogsheetTitles();
+	document.getElementById('loadModal').style.display = 'block';
 }
 
 function closeLoadModal() {
@@ -525,7 +525,6 @@ async function editLogsheet(logsheet) {
     }
 }
 
-window.onload = async function () {}
 
 async function loadFromTemplate(button) {
     // Store the button's parent element to populate later when the user selects a template
