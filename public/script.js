@@ -65,7 +65,7 @@ async function checkUser() {
     }
 }
 
-window.onload = checkUser;
+window.onload = initAuth0;
 
 async function fetchLogsheets() {
     const response = await fetch("/api/getLogsheets", {
