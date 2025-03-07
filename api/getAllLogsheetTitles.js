@@ -11,7 +11,7 @@ module.exports = async function handler(req, res) {
 	await authMiddleware(req, res);
 	console.log(req);
 	console.log(res);
-    const userId = req.auth.sub;
+    
 	if (req.method !== "GET") {
         return res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
@@ -21,7 +21,7 @@ module.exports = async function handler(req, res) {
             cachedClient = new MongoClient(process.env.MONGO_URI);
             await cachedClient.connect();
         } 
-
+		const userId = req.auth.sub;
         const db = cachedClient.db(dbName); 
         const titles = await db.collection(collName).distinct("title");
         
