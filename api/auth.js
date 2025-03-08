@@ -54,7 +54,7 @@ module.exports = async (req, res) => {
         const key = await getSigningKey(decodedHeader.header);
         const decoded = jwt.verify(token, key, { algorithms: ["RS256"] });
 
-        res.status(200).json({ success: true, user: decoded });
+        //res.status(200).json({ success: true, user: decoded });
     } catch (error) {
         console.error("Auth error:", error.message);
         res.status(401).json({ success: false, error: "Unauthorized: Invalid token" });
