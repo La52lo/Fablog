@@ -25,7 +25,7 @@ module.exports = async function handler(req, res) {
         const db = cachedClient.db(dbName); 
         const titles = await db.collection(collName).distinct("title");
         
-        res.status(200).json({ success: true,userid:userID, data: titles });
+        res.status(200).json({ success: true,data: titles });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
