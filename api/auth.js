@@ -22,26 +22,25 @@ module.exports = async (req, res, next) => {
 };
 */
 
+
+
 const jwt = require("jsonwebtoken");
 const jwksClient = require("jwks-rsa");
 
-// Create a JWKS client to fetch Auth0's public key
 const client = jwksClient({
     jwksUri: `https://dev-16kzyoiz8sa3k8ht.us.auth0.com/.well-known/jwks.json`
 });
 
-// Function to get the signing key
 async function getSigningKey(header) {
     return new Promise((resolve, reject) => {
         client.getSigningKey(header.kid, (err, key) => {
-            if (err) return reject(err);
+            if (err) reject(err);
             resolve(key.publicKey || key.rsaPublicKey);
         });
     });
 }
 
-// Middleware to verify JWT
-module.exports = async (req, res, next) => {
+module.exports = async (req, res) => {
     try {
         const token = req.headers.authorization?.split(" ")[1];
         if (!token)  {
@@ -49,18 +48,13 @@ module.exports = async (req, res, next) => {
             return false;  // ⛔ Explicitly return false
         }
 
-        // Decode token header
         const decodedHeader = jwt.decode(token, { complete: true });
         if (!decodedHeader) throw new Error("Invalid Token");
 
-        // Get the public key dynamically
         const key = await getSigningKey(decodedHeader.header);
-        
-        // Verify token using the public key
         const decoded = jwt.verify(token, key, { algorithms: ["RS256"] });
 
-        req.auth = decoded; // Attach user info to request
-        next(); // Continue execution
+        res.status(200).json({ success: true, user: decoded });
     } catch (error) {
         console.error("Auth error:", error.message);
         res.status(401).json({ success: false, error: "Unauthorized: Invalid token" });
