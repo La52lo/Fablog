@@ -39,10 +39,35 @@ async function initAuth0() {
     checkUser();
 }
 
+/*
 // Login function (Redirect to Auth0 login page)
 async function login() {
-    await auth0Client.loginWithRedirect();
+    try {
+        await auth0Client.loginWithPopup();  // ✅ No redirect, faster debugging
+		const token = await auth0Client.getTokenSilently();  // ✅ Get token
+        localStorage.setItem("auth_token", token);  // ✅ Store in localStorage
+        const user = await auth0Client.getUser();
+		https://fablogcloud.vercel.app/api/getAllLogsheetTitles
+        console.log("Logged in user:", user);
+    } catch (error) {
+        console.error("Login failed:", error);
+    }
 }
+
+*/
+async function login() {
+    await auth0Client.loginWithPopup();
+
+    const accessToken = await auth0Client.getTokenSilently({
+        authorizationParams: {
+            audience: "https://fablogcloud.vercel.app/" // ✅ Requesting access token for API
+            //scope: "read:logsheets"  // (Optional) Define API permissions
+        }
+    });
+
+    localStorage.setItem("auth_token", accessToken);
+}
+
 
 // Logout function
 async function logout() {
