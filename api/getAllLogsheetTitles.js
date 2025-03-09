@@ -8,8 +8,8 @@ const authMiddleware = require("./auth");
 module.exports = async function handler(req, res) {
     var dbName = "logbook";
 	var collName = "logsheets";
-	const authResult = await authMiddleware(req, res);
-	if (!authResult) return; // ✅ Execution stops here if unauthorized
+	const userId = await authMiddleware(req, res);
+    if (!userId) return;  // ⛔ Stop execution if unauthorized
 
     
 	if (req.method !== "GET") {
@@ -21,9 +21,8 @@ module.exports = async function handler(req, res) {
             cachedClient = new MongoClient(process.env.MONGO_URI);
             await cachedClient.connect();
         } 
-		const userId = req.auth.sub;
         const db = cachedClient.db(dbName); 
-        const titles = await db.collection(collName).distinct("title");
+        const titles = await db.collection(collName).find({ ownerId: userId }).toArray();;
         
         res.status(200).json({ success: true,data: titles });
     } catch (error) {
