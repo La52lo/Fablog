@@ -15,8 +15,6 @@ module.exports = async function handler(req, res) {
         if (!logsheet) {
             return res.status(400).json({ success: false, error: "Logsheet is required" });
         }
-		
-		let objectId;
 		const {ObjectId} = require('mongodb');
 		const objectId = logsheet._id ? new ObjectId(logsheet._id) : new ObjectId();
 		if (!objectId) { objectId = new ObjectId();}
