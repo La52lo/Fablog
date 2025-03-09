@@ -1,5 +1,6 @@
 const { MongoClient } = require("mongodb");
 let cachedClient = null;
+const authMiddleware = require("./auth");
 
 module.exports = async function handler(req, res) {
     var dbName = "logbook";
