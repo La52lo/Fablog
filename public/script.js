@@ -461,14 +461,14 @@ async function saveLogsheet() {
         items
     };
 
-    // DELETE const response = await app.currentUser.functions.saveLogsheet(logsheet);
-    const response = await fetch("/api/saveLogsheet", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+	const response = await fetch(`/api/saveLogsheet`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+				"Authorization": `Bearer ${localStorage.getItem("auth_token")}`
+            },
         body: JSON.stringify(logsheet)
-    });
+        });
     const jsonData = await response.json();
     if (jsonData.success) {
         document.getElementById('logsheet-id').value = jsonData.objectId.toString();
