@@ -259,6 +259,21 @@ hr {
     color: darkred;
 }
 
+li.clickable {
+    cursor: pointer;       /* Shows hand cursor */
+    background-color: #ebebeb;
+    transition: background 0.3s ease;
+	margin: 10px;
+}
+
+li.clickable:hover {
+    background-color: #b5b5b5;  /* Changes background on hover */
+}
+
+ul {
+	list-style-type: none;
+	padding: 0;
+}
 
 .file-upload-button {
     background-color: white;

@@ -44,8 +44,8 @@ module.exports = async (req, res) => {
     try {
         const token = req.headers.authorization?.split(" ")[1];
         if (!token)  {
-            res.status(401).json({ success: false, error: "Unauthorized: Missing token" });
-            return false;  // ⛔ Explicitly return false
+            //res.status(401).json({ success: false, error: "Unauthorized: Missing token" });
+            return "Guest";  // ⛔ Explicitly return false
         }
 
         const decodedHeader = jwt.decode(token, { complete: true });
@@ -53,14 +53,17 @@ module.exports = async (req, res) => {
 
         const key = await getSigningKey(decodedHeader.header);
         const decoded = jwt.verify(token, key, { algorithms: ["RS256"] });
+		if (decoded.exp * 1000 < Date.now()) {
+            return "Guest";
+        }
 		req.auth = decoded; // Attach user data to request
         return decoded.sub;  // ✅ Return user_id
-
+		
 
         //res.status(200).json({ success: true, user: decoded });
     } catch (error) {
         console.error("Auth error:", error.message);
-        res.status(401).json({ success: false, error: "Unauthorized: Invalid token" });
-		return false;  // ⛔ Explicitly return false
+        //res.status(401).json({ success: false, error: "Unauthorized: Invalid token" });
+		return "Guest";  // ⛔ Explicitly return false
     }
 };

@@ -8,7 +8,7 @@ module.exports = async function handler(req, res) {
 	const userId = await authMiddleware(req, res);
     if (!userId) return;  // ⛔ Stop execution if unauthorized
 
-    
+    console.log(userId);
 	if (req.method !== "GET") {
         return res.status(405).json({ success: false, error: "Method Not Allowed" });
     }
@@ -19,8 +19,7 @@ module.exports = async function handler(req, res) {
             await cachedClient.connect();
         } 
         const db = cachedClient.db(dbName); 
-        const titles = await db.collection(collName).find({ ownerId: userId }).toArray();;
-        
+		const titles = await db.collection(collName).distinct("title", { ownerId: userId });
         res.status(200).json({ success: true,data: titles });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
