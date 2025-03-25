@@ -1,29 +1,3 @@
-
-
-/*
-const jwt = require("jsonwebtoken");
-module.exports = async (req, res, next) => {
-    try {
-        const token = req.headers.authorization?.split(" ")[1];
-        if (!token) {
-            res.status(401).json({ success: false, error: "Unauthorized: Missing token" });
-            return false;  // ⛔ Explicitly return false
-        }
-		//console.log(token,"@@@",process.env.AUTH0_CLIENT_SECRET,"****");
-		//console.log("Token parts:", token.split(".").length);
-        const decoded = jwt.verify(token, process.env.AUTH0_CLIENT_SECRET, { algorithms: ["RS256"] });
-        req.auth = decoded; // Attach user data to request
-        next(); // ✅ Continue to API function
-    } catch (error) {
-        console.error("Authentication error:", error.message);
-        res.status(401).json({ success: false, error: "Unauthorized: Invalid token" });
-        return false;  // ⛔ Explicitly return false
-    }
-};
-*/
-
-
-
 const jwt = require("jsonwebtoken");
 const jwksClient = require("jwks-rsa");
 
@@ -44,8 +18,7 @@ module.exports = async (req, res) => {
     try {
         const token = req.headers.authorization?.split(" ")[1];
         if (!token)  {
-            //res.status(401).json({ success: false, error: "Unauthorized: Missing token" });
-            return "Guest";  // ⛔ Explicitly return false
+            return "Guest"; 
         }
 
         const decodedHeader = jwt.decode(token, { complete: true });
@@ -58,12 +31,8 @@ module.exports = async (req, res) => {
         }
 		req.auth = decoded; // Attach user data to request
         return decoded.sub;  // ✅ Return user_id
-		
-
-        //res.status(200).json({ success: true, user: decoded });
     } catch (error) {
         console.error("Auth error:", error.message);
-        //res.status(401).json({ success: false, error: "Unauthorized: Invalid token" });
-		return "Guest";  // ⛔ Explicitly return false
+		return "Guest";
     }
 };

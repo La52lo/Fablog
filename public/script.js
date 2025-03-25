@@ -491,7 +491,11 @@ async function saveLogsheet() {
 }
 
 async function deleteLogsheet() {
-    const logsheetId = document.getElementById('logsheet-id').value;
+    
+	const logsheetId = document.getElementById('logsheet-id').value;
+	const title = document.getElementById('logsheet-title').value;
+	if (!confirm(`Are you sure you want to delete Logsheet "${title}"?`))
+        return;
 	const response = await fetch(`/api/logsheet?id=${encodeURIComponent(logsheetId)}`, {
             method: "DELETE",
             headers: {
@@ -500,7 +504,8 @@ async function deleteLogsheet() {
             }
         });
     if (response) {
-        alert("deleted!");
+        alert("Logsheet deleted!");
+		newLogsheet();
     } else {
         console.error("Deleting logsheet failed:", jsonData.error);
     }
@@ -587,10 +592,11 @@ async function fetchTemplateTitles() {
     try {
         // Fetch the list of template titles from the backend
         // DELETE const response = await app.currentUser.functions.getAllTemplateTitles();
-        const response = await fetch(`/api/fetchTemplateTitles`, {
+		const response = await fetch(`/api/fetchTemplateTitles`, {
             method: "GET",
             headers: {
-                "Accept": "application/json"
+                "Accept": "application/json",
+				"Authorization": `Bearer ${localStorage.getItem("auth_token")}`
             }
         });
         const templateList = document.getElementById('template-list');
@@ -601,12 +607,12 @@ async function fetchTemplateTitles() {
             jsonData.data.forEach(title => {
                 const li = document.createElement('li');
                 li.innerHTML = `
-                <span onclick="selectTemplate('${title}')">${title}</span> 
+                <span onclick="fetchTemplate('${title}')">${title}</span> 
                 <button class="delete-template" onclick="deleteTemplate('${title}')">
                     <i class="fas fa-trash-alt"></i>
                 </button>
 				`;
-                li.className = "template-item";
+                li.className = "template-item clickable";
                 templateList.appendChild(li);
             });
         } else {
@@ -628,19 +634,15 @@ function filterTemplates() {
     }
 }
 
-async function selectTemplate(title) {
-    // Fetch the template by its title
+async function fetchTemplate(title) {
     try {
-        // DELETE const response = await app.currentUser.functions.getTemplateByTitle(title);
-
-
-        const response = await fetch(`/api/getTemplateByTitle?title=${encodeURIComponent(title)}`, {
+		const response = await fetch(`/api/template?title=${encodeURIComponent(title)}`, {
             method: "GET",
             headers: {
-                "Accept": "application/json"
+                "Accept": "application/json",
+				"Authorization": `Bearer ${localStorage.getItem("auth_token")}`
             }
         });
-
         const jsonData = await response.json();
         if (jsonData.success && jsonData.data) {
             const template = jsonData.data;

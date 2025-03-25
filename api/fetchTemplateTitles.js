@@ -7,8 +7,6 @@ module.exports = async function handler(req, res) {
 	var collName = "templates";
 	const userId = await authMiddleware(req, res);
     if (!userId) return;  // ⛔ Stop execution if unauthorized
-
-    console.log(userId);
 	if (req.method !== "GET") {
         return res.status(405).json({ success: false, error: "Method Not Allowed" });
     }

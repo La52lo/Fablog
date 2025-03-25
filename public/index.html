@@ -16,15 +16,18 @@
 
 </head>
 <body>
-<p id="user-info"></p>
+
+<div class="toolbar">
+	<span class="userLabel" id="user-info"></span>
+	<button id="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+	<button id="logout-btn" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+</div>
+
 <div class="toolbar">
     <button onclick="newLogsheet()"><i class="fas fa-plus-circle"></i> New Logsheet</button>
-	<button onclick="openLoadModal()"><i class="fas fa-folder-open"></i> Load Logsheet</button>
+	<button onclick="openLoadModal()"><i class="fas fa-folder-open"></i> Open Logsheet</button>
     <button onclick="saveLogsheet()"><i class="fas fa-save"></i> Save Logsheet</button>
     <button onclick="deleteLogsheet()"><i class="fas fa-trash"></i> Delete Logsheet</button>
-	<button id="login-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
-	<button id="logout-btn" style="display: none;">Logout</button>
-    
 </div>
 <button id="floating-save-button" onclick="saveLogsheet()">
     <i class="fas fa-save"></i> Save

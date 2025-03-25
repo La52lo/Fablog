@@ -244,7 +244,6 @@ hr {
     justify-content: space-between;
     align-items: center;
     padding: 5px;
-    border-bottom: 1px solid black;
 }
 
 .template-item button.delete-template {
@@ -394,9 +393,12 @@ code, pre {
   grid-row-gap:6px;
   width: 100%; /* Make sure the toolbar fills available space */
   max-width: 800px; /* Optional: Set a max width for the toolbar */
-  margin: 0 auto; /* Center the toolbar on the page */
+  margin: 3px auto; /* Center the toolbar on the page */
 }
 
+.userLabel {
+	grid-column-end: span 3;
+}
 @media (max-width: 500px) {
     .toolbar {
         grid-template-columns: 1fr; /* Switch to 1 column for vertical layout */

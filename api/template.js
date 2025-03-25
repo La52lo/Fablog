@@ -15,7 +15,7 @@ module.exports = async function handler(req, res) {
                 await cachedClient.connect();
         }
 		const db = cachedClient.db(dbName);
-		if (req.method !== "GET") {
+		if (req.method == "GET") {
 			
 			const { title } = req.query;
 			if (!title) {
